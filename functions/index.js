@@ -4,7 +4,11 @@ const express = require("express");
 
 const app = express();
 
-exports.app = app;
+exports.app = functions.https.onRequest(app);
+
+app.get("/welcome", (req, res) => {
+  res.status(200).json({ message: "Ciao Miguel" });
+});
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
