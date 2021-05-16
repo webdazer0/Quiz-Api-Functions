@@ -1,0 +1,42 @@
+@host = localhost:5000/quiz-restful/us-central1/app
+
+##### GET
+
+GET http://{{host}}/welcome HTTP/1.1
+
+
+##### POST
+POST http://{{host}}/api/questions HTTP/1.1
+content-type: application/json
+
+{
+    "question": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "answers": [
+      "pedsdsdttive",
+      "attrezzatfewfewfrganismi",
+      "mani deglis operatori",
+      "contatto (dir1111111111111111111111111via aerea"
+    ],
+    "correct_answer": "ZZZZZZZdadasfwf32543532"
+}
+
+##### GET ALL QUESTIONS
+GET http://{{host}}/api/questions HTTP/1.1
+content-type: application/json
+
+##### GET A SINGLE QUESTION
+GET http://{{host}}/api/questions/Yj03IbpLHD3MtnRaZEX5 HTTP/1.1
+content-type: application/json
+
+##### PUT A SINGLE QUESTION
+PUT http://{{host}}/api/questions/Yj03IbpLHD3MtnRaZEX5 HTTP/1.1
+content-type: application/json
+
+{
+    "question": "this question has been changed",
+    "correct_answer": "The answer is not here anymore"
+}
+
+##### DELETE A SINGLE QUESTION
+DELETE http://{{host}}/api/questions/Yj03IbpLHD3MtnRaZEX5 HTTP/1.1
+content-type: application/json
