@@ -13,6 +13,9 @@ const db = admin.firestore();
 
 exports.app = functions.https.onRequest(app);
 
+// ------------
+// Welcome Page
+// ------------
 app.get("/welcome", (req, res) => {
   res.status(200).json({ message: "Ciao Miguel" });
 });
@@ -28,6 +31,7 @@ app.get("/api/questions", async (req, res) => {
     const docs = querySnapshot.docs;
 
     const response = docs.map((doc) => ({
+      _id: doc.id,
       question: doc.data().question,
       answers: doc.data().answers,
       correct_answer: doc.data().correct_answer,
@@ -54,6 +58,27 @@ app.post("/api/questions", async (req, res) => {
     await db.collection("questions").doc().create(payload);
 
     return res.status(200).json({ message: "Question Successfully Saved! =)" });
+  } catch (error) {
+    // console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+});
+
+// -----------------
+// Get a single Question
+// -----------------
+app.get("/api/questions/:id", async (req, res) => {
+  try {
+    const query = db.collection("questions");
+    const doc = query.doc(req.params.id);
+    const item = await doc.get();
+    // const response = item.data();
+    const response = {
+      _id: item.id,
+      ...item.data(),
+    };
+
+    return res.status(200).json(response);
   } catch (error) {
     // console.log(error.message);
     return res.status(500).json({ message: "Something went wrong" });
