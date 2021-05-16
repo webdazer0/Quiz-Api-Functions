@@ -17,6 +17,27 @@ app.get("/welcome", (req, res) => {
   res.status(200).json({ message: "Ciao Miguel" });
 });
 
+// -----------------
+// Get All Questions
+// -----------------
+app.get("/api/questions", async (req, res) => {
+  const query = db.collection("questions");
+
+  const querySnapshot = await query.get();
+  const docs = querySnapshot.docs;
+
+  const response = docs.map((doc) => ({
+    question: doc.data().question,
+    answers: doc.data().answers,
+    correct_answer: doc.data().correct_answer,
+  }));
+
+  return res.status(200).json(response);
+});
+
+// ------------------------
+// Create a single Question
+// ------------------------
 app.post("/api/questions", async (req, res) => {
   const payload = {
     question: req.body.question,
