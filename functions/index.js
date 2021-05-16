@@ -23,31 +23,41 @@ app.get("/welcome", (req, res) => {
 app.get("/api/questions", async (req, res) => {
   const query = db.collection("questions");
 
-  const querySnapshot = await query.get();
-  const docs = querySnapshot.docs;
+  try {
+    const querySnapshot = await query.get();
+    const docs = querySnapshot.docs;
 
-  const response = docs.map((doc) => ({
-    question: doc.data().question,
-    answers: doc.data().answers,
-    correct_answer: doc.data().correct_answer,
-  }));
+    const response = docs.map((doc) => ({
+      question: doc.data().question,
+      answers: doc.data().answers,
+      correct_answer: doc.data().correct_answer,
+    }));
 
-  return res.status(200).json(response);
+    return res.status(200).json(response);
+  } catch (error) {
+    // console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
 });
 
 // ------------------------
 // Create a single Question
 // ------------------------
 app.post("/api/questions", async (req, res) => {
-  const payload = {
-    question: req.body.question,
-    answers: req.body.answers,
-    correct_answer: req.body.correct_answer,
-  };
+  try {
+    const payload = {
+      question: req.body.question,
+      answers: req.body.answers,
+      correct_answer: req.body.correct_answer,
+    };
 
-  await db.collection("questions").doc().create(payload);
+    await db.collection("questions").doc().create(payload);
 
-  return res.status(200).json({ message: "Question Successfully Saved! =)" });
+    return res.status(200).json({ message: "Question Successfully Saved! =)" });
+  } catch (error) {
+    // console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
 });
 
 // // Create and Deploy Your First Cloud Functions
